@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Review & Professional Development Discussion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .presentation-container {
+            width: 95%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 60px;
+            min-height: 700px;
+            position: relative;
+            background: white;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .slide h2 {
+            color: #3498db;
+            font-size: 2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        .bullet-points {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .bullet-points li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .bullet-points li:before {
+            content: "▶";
+            color: #3498db;
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #6c757d;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #34495e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 60px;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .project-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+
+        .value-proposition {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .request-section {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #3498db;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">20</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Performance Review & Professional Development Discussion</h1>
+            <div class="subtitle">3-Month Accomplishments at Avanti R&D</div>
+            <div style="font-size: 1.2em; margin-top: 40px;">
+                <div><strong>Yejin Shin</strong></div>
+                <div>Software Engineer Intern</div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Executive Summary -->
+        <div class="slide">
+            <h2>Executive Summary</h2>
+            <div class="highlight-box">
+                <h3>Thank you for this opportunity to discuss my contributions and future at Avanti R&D</h3>
+            </div>
+            <div class="content">
+                <ul class="bullet-points">
+                    <li><strong>Duration:</strong> 3+ months of dedicated service since April 14, 2025</li>
+                    <li><strong>Consistency:</strong> Daily sensor monitoring with zero missed days</li>
+                    <li><strong>Innovation:</strong> 5 major software development projects completed</li>
+                    <li><strong>Documentation:</strong> Comprehensive technical documentation and issue resolution</li>
+                    <li><strong>Collaboration:</strong> Cross-team support and international teamwork</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Current Situation -->
+        <div class="slide">
+            <h2>Current Situation Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">103+</div>
+                    <div>Days of Service</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div>Sensor Systems Monitored</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div>Major Projects Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div>Attendance Rate</div>
+                </div>
+            </div>
+            <div class="content">
+                <ul class="bullet-points">
+                    <li><strong>Start Date:</strong> April 14, 2025</li>
+                    <li><strong>Current Role:</strong> Software Engineer Intern</li>
+                    <li><strong>Focus Areas:</strong> Sensor monitoring, Software development, Research assistance</li>
+                    <li><strong>Work Style:</strong> Proactive, Systematic, Collaborative</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: Daily Operations Excellence -->
+        <div class="slide">
+            <h2>Consistent Sensor Monitoring & Issue Resolution</h2>
+            <div class="project-card">
+                <h3>Daily Sensor System Management</h3>
+                <ul class="bullet-points">
+                    <li><strong>Denmark-doll sensor:</strong> Continuous monitoring and maintenance</li>
+                    <li><strong>Torrance sensor:</strong> Daily status checks and issue resolution</li>
+                    <li><strong>Kagoshima sensor:</strong> Proactive monitoring and documentation</li>
+                    <li><strong>Murata Shimane sensor:</strong> Successfully completed July 24, 2025</li>
+                </ul>
+            </div><style>
+                </style>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide4_1.png" alt="Screenshot 1" style="width: 50%; max-width: 800px; height: auto;" />
+            </div>
+            </div>
+            <div class="content">
+                <ul class="bullet-points">
+                    <li>Proactive error detection and immediate resolution</li>
+                    <li>Collaborative troubleshooting with Jared</li>
+                    <li>Regular VP reporting and status updates</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: Technical Documentation -->
+        <div class="slide">
+            <h2>Comprehensive Issue Resolution Documentation</h2>
+            <div class="project-card">
+                <h3>Professional Documentation Standards</h3>
+                <ul class="bullet-points">
+                    <li>Created detailed troubleshooting guides for sensor packet issues</li>
+                    <li>MongoDB database error resolution documentation</li>
+                    <li>Systematic problem-solving approach with knowledge transfer focus</li>
+                    <li>Professional technical writing for team reference</li>
+                </ul>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide5_1.png" alt="Screenshot 1" style="width: 48%; max-width: 600px; height: auto;" />
+                <img src="./slide/slide5_2.png" alt="Screenshot 2" style="width: 48%; max-width: 600px; height: auto;" />
+            </div>
+            </div>
+            <div class="highlight-box">
+                <strong>Impact:</strong> Created reusable solutions that prevent future issues and enable team self-sufficiency
+            </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Project 1 - Google Drive Tool -->
+        <div class="slide">
+            <h2>Software Development Initiative #1</h2>
+            <div class="project-card">
+                <h3>🔧 Google Drive File Management Tool</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Google Drive API</span>
+                    <span class="tech-tag">Data Analysis</span>
+                </div>
+                <ul class="bullet-points">
+                    <li><strong>Purpose:</strong> Analyze storage usage in Google Shared Drives</li>
+                    <li><strong>Features:</strong> File organization, storage optimization, Excel export</li>
+                    <li><strong>Impact:</strong> Streamlined company file management processes</li>
+                    <li><strong>GitHub:</strong> Professional repository with comprehensive documentation</li>
+                </ul>
+            </div>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide6_1.png" alt="Screenshot 1" style="width: 48%; max-width: 600px; height: auto;" />
+                <img src="./slide/slide6_2.png" alt="Screenshot 2" style="width: 48%; max-width: 600px; height: auto;" />
+            </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Project 2 - Video Selector -->
+        <div class="slide">
+            <h2>Software Development Initiative #2</h2>
+            <div class="project-card">
+                <h3>🎬 Office Tool - Video Selector System</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">AWS S3</span>
+                    <span class="tech-tag">VLC Integration</span>
+                    <span class="tech-tag">CLI Interface</span>
+                </div>
+                <ul class="bullet-points">
+                    <li><strong>Innovation:</strong> S3-integrated video browsing and selection</li>
+                    <li><strong>Automation:</strong> Automatic VLC playback with infinite loop capability</li>
+                    <li><strong>User Experience:</strong> Intuitive CLI interface with beautiful logging</li>
+                    <li><strong>Business Value:</strong> Improved office productivity and media management</li>
+                </ul>
+            </div>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide7_1.png" alt="Screenshot 1" style="width: 48%; max-width: 600px; height: auto;" />
+                <img src="./slide/slide7_2.png" alt="Screenshot 2" style="width: 48%; max-width: 600px; height: auto;" />
+            </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Project 3 - CSV Checker -->
+        <div class="slide">
+            <h2>Software Development Initiative #3</h2>
+            <div class="project-card">
+                <h3>✅ Data Integrity Verification Tool</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Google Drive API</span>
+                    <span class="tech-tag">MD5 Checksum</span>
+                    <span class="tech-tag">Data Validation</span>
+                </div>
+                <ul class="bullet-points">
+                    <li><strong>Purpose:</strong> Verify CSV file integrity from deepstream conversions</li>
+                    <li><strong>Features:</strong> Duplicate detection, MD5 checksum verification</li>
+                    <li><strong>Reliability:</strong> Automated reporting and error detection</li>
+                    <li><strong>Quality Assurance:</strong> Ensures data consistency and prevents corruption</li>
+                </ul>
+            </div>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide8_1.png" alt="Screenshot 1" style="width: 48%; max-width: 600px; height: auto;" />
+                <img src="./slide/slide8_2.png" alt="Screenshot 2" style="width: 48%; max-width: 600px; height: auto;" />
+            </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Project 4 - SlidesMerge -->
+        <div class="slide">
+            <h2>Current Development Project</h2>
+            <div class="project-card">
+                <h3>🧩 SlidesMerge - Full-Stack Web Application</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">React 18</span>
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">TailwindCSS</span>
+                    <span class="tech-tag">Express</span>
+                    <span class="tech-tag">Zustand</span>
+                </div>
+                <ul class="bullet-points">
+                    <li><strong>Role:</strong> Solo full-stack developer (UI/UX, Frontend, Backend)</li>
+                    <li><strong>Purpose:</strong> Company presentation slide management and merging</li>
+                    <li><strong>Features:</strong> Drag-and-drop interface, tag-based grouping, PPT export</li>
+                    <li><strong>Status:</strong> Active development with functional prototype</li>
+                </ul>
+            </div>
+            <div class="screenshot-placeholder">
+            <div class="screenshot-row">
+                <img src="./slide/slide9_1.png" alt="Screenshot 1" style="width: 48%; max-width: 600px; height: auto;" />
+                <img src="./slide/slide9_2.png" alt="Screenshot 2" style="width: 48%; max-width: 600px; height: auto;" />
+            </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Research & Documentation -->
+        <div class="slide">
+            <h2>Research & Documentation Contributions</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div>Research Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Multiple</div>
+                    <div>RAMP Updates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Various</div>
+                    <div>Team Assistance</div>
+                </div>
+            </div>
+            <div class="content">
+                <ul class="bullet-points">
+                    <li><strong>Strategic Research:</strong> LA28, Smart Cities, Skype alternatives analysis</li>
+                    <li><strong>Government Compliance:</strong> RAMP documentation updates</li>
+                    <li><strong>Data Support:</strong> Preprocessing assistance for Hideki-san</li>
+                    <li><strong>Technical Support:</strong> Sensor testing and video backup operations</li>
+                    <li><strong>Cross-team Collaboration:</strong> Consistent support for colleagues</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 11: Value Proposition Summary -->
+        <div class="slide">
+            <h2>Demonstrated Value & Professional Growth</h2>
+            <div class="value-proposition">
+                <h3>📈 Comprehensive Skill Development</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                    <div>
+                        <h4>Technical Excellence</h4>
+                        <ul class="bullet-points" style="color: white;">
+                            <li>Python & React development</li>
+                            <li>AWS & Database management</li>
+                            <li>API integration expertise</li>
+                            <li>Full-stack web development</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Professional Skills</h4>
+                        <ul class="bullet-points" style="color: white;">
+                            <li>Cross-cultural communication</li>
+                            <li>Technical documentation</li>
+                            <li>Systematic problem-solving</li>
+                            <li>International teamwork</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <strong>Proven Track Record:</strong> 100% attendance, consistent daily monitoring, proactive issue resolution, and multiple innovative solutions delivered
+            </div>
+        </div>
+
+        <!-- Slide 12: Professional Development Request -->
+        <div class="slide">
+            <h2>Investment in Continued Excellence</h2>
+            <div class="request-section">
+                <h3>💼 Professional Development Request</h3>
+                <div style="font-size: 1.2em; margin: 20px 0;">
+                    <div><strong>Current Situation:</strong> $1,000/month stipend</div>
+                    <div style="margin: 15px 0;"><strong>Request:</strong> Adjustment to $1,500/month</div>
+                </div>
+            </div>
+            <div class="content">
+                <h3>Business Justification:</h3>
+                <ul class="bullet-points">
+                    <li><strong>Demonstrated Value:</strong> Created 5 major software tools saving company time and resources</li>
+                    <li><strong>Reliability:</strong> Zero missed days, consistent daily operations</li>
+                    <li><strong>Innovation:</strong> Proactive solutions beyond assigned responsibilities</li>
+                    <li><strong>Financial Reality:</strong> Current stipend creates constraints affecting focus</li>
+                    <li><strong>Investment Return:</strong> Continued dedication to Avanti R&D's success</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Future Collaboration -->
+        <div class="slide">
+            <h2>Long-term Partnership Potential</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Current - November 2025</h3>
+                    <p>Continued excellence in internship responsibilities</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Post November 2025</h3>
+                    <p>Interest in long-term employment opportunities in the United States</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Career Development</h3>
+                    <p>Seeking guidance on professional growth pathways</p>
+                </div>
+            </div>
+            <div class="content">
+                <ul class="bullet-points">
+                    <li><strong>Visa Considerations:</strong> Exploring pathways for continued contribution</li>
+                    <li><strong>Professional Network:</strong> Grateful for any connections or career advice</li>
+                    <li><strong>Mutual Growth:</strong> Committed to growing with Avanti R&D</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 14: Thank You -->
+        <div class="slide title-slide">
+            <h1>Thank You for Your Consideration</h1>
+            <div class="subtitle">Appreciation & Next Steps</div>
+            <div style="font-size: 1.2em; margin-top: 40px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                <ul class="bullet-points" style="color: white;">
+                    <li>Grateful for the opportunity to contribute to Avanti R&D</li>
+                    <li>Appreciation for mentorship and professional growth environment</li>
+                    <li>Request for Google Meet to discuss these topics further</li>
+                    <li>Commitment to continued excellence and innovation</li>
+                </ul>
+            </div>
+            <div style="margin-top: 40px; font-size: 1.1em; opacity: 0.9;">
+                Ready to discuss how we can move forward together
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
